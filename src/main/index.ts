@@ -158,7 +158,7 @@ if (!gotTheLock) {
       tray = new Tray(join(__dirname, "../../resources/icon.ico"));
       const contextMenu = Menu.buildFromTemplate([
         {
-          label: "Open Dysperse",
+          label: "Open setup control",
           click: () => mainWindow && mainWindow.show(),
         },
         {
@@ -170,7 +170,7 @@ if (!gotTheLock) {
         },
       ]);
 
-      tray.setToolTip("Dysperse");
+      tray.setToolTip("Manu's Setup");
       tray.setContextMenu(contextMenu);
       tray.on("click", () => mainWindow && mainWindow.show());
     }
