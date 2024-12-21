@@ -10,6 +10,7 @@ import {
   shell,
   Tray,
 } from "electron";
+import AutoLaunch from "auto-launch";
 import { join } from "path";
 
 const API_ENDPOINT = "http://192.168.1.44:5000";
@@ -115,6 +116,14 @@ app.whenReady().then(() => {
   electronApp.setAppUserModelId("com.electron");
   app.on("browser-window-created", (_, window) => {
     optimizer.watchWindowShortcuts(window);
+  });
+
+  let autoLaunch = new AutoLaunch({
+    name: "Setup control",
+    path: app.getPath("exe"),
+  });
+  autoLaunch.isEnabled().then((isEnabled) => {
+    if (!isEnabled) autoLaunch.enable();
   });
 
   ipcMain.on("ping", () => console.log("pong"));
