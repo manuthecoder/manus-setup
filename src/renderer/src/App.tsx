@@ -220,7 +220,7 @@ function Status() {
   return (
     <Card
       className={
-        " rounded-full text-center w-[350px]" +
+        "rounded-full text-center w-[350px]" +
         (online ? " bg-green-900" : " bg-red-900")
       }
     >
