@@ -36,7 +36,7 @@ function checkIfMuted(): any {
 
 powerMonitor.addListener("lock-screen", async () => {
   fetch(`${API_ENDPOINT}/lock_event`, {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
