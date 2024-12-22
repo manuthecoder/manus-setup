@@ -35,13 +35,7 @@ function checkIfMuted(): any {
 }
 
 powerMonitor.addListener("lock-screen", async () => {
-  fetch(`${API_ENDPOINT}/lock_event`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ event_type: "LOCK" }),
-  });
+  fetch(`${API_ENDPOINT}/lock_event?eventType=LOCK`);
 
   const isMuted = await checkIfMuted();
   if (!isMuted) {
@@ -51,13 +45,7 @@ powerMonitor.addListener("lock-screen", async () => {
 });
 
 powerMonitor.addListener("unlock-screen", async () => {
-  fetch(`${API_ENDPOINT}/lock_event`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ event_type: "UNLOCK" }),
-  });
+  fetch(`${API_ENDPOINT}/lock_event?eventType=UNLOCK`);
 
   const isMuted = await checkIfMuted();
   if (isMuted) {
