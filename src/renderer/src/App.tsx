@@ -57,27 +57,31 @@ function Pironman() {
         <CardTitle>Pironman</CardTitle>
       </CardHeader>
       <CardContent>
-        <p>RGB strip light color</p>
+        <p>RGB color</p>
         <ColorPicker />
       </CardContent>
       <CardContent>
-        <p>RGB strip light color</p>
+        <p>RGB style</p>
         <div className="grid grid-cols-2 items-center gap-2 mt-2">
-          {["Breath", "Colorful", "Flow", "Raise_Up"].map((choice) => (
+          {[
+            { name: "Breath", icon: "spa", value: "breath" },
+            { name: "Colorful", icon: "palette", value: "colorful" },
+            { name: "Flow", icon: "airwave", value: "flow" },
+            { name: "Raise up", icon: "moving", value: "raise_up" },
+          ].map((choice) => (
             <Button
-              key={choice}
+              key={choice.name}
               onClick={async () => {
-                setLoading(choice);
-                await fetch(
-                  `${base}/set-rgb-style?value=${choice.toLowerCase()}`
-                );
+                setLoading("style");
+                await fetch(`${base}/set-rgb-style?value=${choice.value}`);
                 setLoading(null);
               }}
               variant="outline"
               className="flex-1"
-              disabled={loading === choice}
+              disabled={loading === "style"}
             >
-              {choice.replace("_", " ")}
+              <span className="icon">{choice.icon}</span>
+              {choice.name}
             </Button>
           ))}
         </div>
@@ -186,6 +190,51 @@ function LockOnLeave() {
   );
 }
 
+function Status() {
+  const [online, setOnline] = useState<boolean>(false);
+
+  const getStatus = async () => {
+    try {
+      const response = await fetch(`${base}`).then((res) => res.json());
+      if (response.status === "ONLINE") {
+        setOnline(true);
+      }
+    } catch (error) {
+      console.error(error);
+      setOnline(false);
+    }
+  };
+
+  useEffect(() => {
+    getStatus();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      getStatus();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <Card
+      className={
+        " rounded-full text-center w-[350px]" +
+        (online ? " bg-green-900" : " bg-red-900")
+      }
+    >
+      <CardHeader className="py-2 flex-row justify-center gap-3 items-center">
+        <span className="icon">wifi</span>
+        <p style={{ marginTop: 0 }}>
+          {online ? "Connected to " : "Can't connect to "}
+          {base.replace("http://", "")}
+        </p>
+      </CardHeader>
+    </Card>
+  );
+}
+
 function App(): JSX.Element {
   return (
     <div
@@ -196,6 +245,8 @@ function App(): JSX.Element {
         style={{ ["WebkitAppRegion" as any]: "drag" }}
         className="fixed top-0 w-full left-0 z-10 backdrop-blur-lg h-[30px]"
       />
+
+      <Status />
 
       <h1 className="text-center mt-7 mb-3 text-3xl font-black">Functions</h1>
       <LockOnLeave />
