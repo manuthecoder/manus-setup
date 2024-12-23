@@ -59,9 +59,10 @@ function createWindow(): void {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     show: false,
-    width: 500,
-    height: 700,
     maxWidth: 500,
+    minWidth: 500,
+    maxHeight: 700,
+    minHeight: 700,
     autoHideMenuBar: true,
     center: true,
     titleBarOverlay: {
@@ -101,7 +102,7 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
-  electronApp.setAppUserModelId("com.electron");
+  electronApp.setAppUserModelId("setup.controller");
   app.on("browser-window-created", (_, window) => {
     optimizer.watchWindowShortcuts(window);
   });

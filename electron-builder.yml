@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: setup.controller.app
 productName: electron-app
 directories:
   buildResources: build

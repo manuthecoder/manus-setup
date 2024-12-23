@@ -218,20 +218,20 @@ function Status() {
   }, []);
 
   return (
-    <Card
+    <div
       className={
-        "rounded-full text-center w-[350px]" +
-        (online ? " bg-green-900" : " bg-red-900")
+        "rounded-full text-center inline-flex text-xs px-2 py-0.5 ml-2 gap-2 flex-row items-center" +
+        (online ? " bg-green-950" : " bg-red-950")
       }
     >
-      <CardHeader className="py-2 flex-row justify-center gap-3 items-center">
-        <span className="icon">wifi</span>
-        <p style={{ marginTop: 0 }}>
-          {online ? "Connected to " : "Can't connect to "}
-          {base.replace("http://", "")}
-        </p>
-      </CardHeader>
-    </Card>
+      <span
+        className={"icon text-xs" + (online ? " text-green-200" : " text-red-200")}
+        style={{ fontVariationSettings: `"wght" 300` }}
+      >
+        wifi
+      </span>
+      <p style={{ marginTop: 0 }} className={"font-medium" + (online ? " text-green-200" : " text-red-200")}>{online ? "Connected" : "Offline"}</p>
+    </div>
   );
 }
 
@@ -243,10 +243,10 @@ function App(): JSX.Element {
     >
       <div
         style={{ ["WebkitAppRegion" as any]: "drag" }}
-        className="fixed top-0 w-full left-0 z-10 backdrop-blur-lg h-[30px]"
-      />
-
-      <Status />
+        className="fixed top-0 w-full left-0 z-10 flex items-center backdrop-blur-lg h-[30px]"
+      >
+        <Status />
+      </div>
 
       <h1 className="text-center mt-7 mb-3 text-3xl font-black">Functions</h1>
       <LockOnLeave />
