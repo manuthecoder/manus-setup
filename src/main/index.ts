@@ -67,7 +67,7 @@ function createWindow(): void {
     center: true,
     titleBarOverlay: {
       color: "rgba(0,0,0,0)",
-      symbolColor: "#fff",
+      symbolColor: "#000",
     },
     titleBarStyle: "hidden",
     backgroundColor: nativeTheme.shouldUseDarkColors

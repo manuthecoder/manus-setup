@@ -6,6 +6,9 @@
   ::-webkit-scrollbar {
     display: none;
   }
+  * {
+    outline: none;
+  }
   :root {
     -webkit-app-region: drag;
     height: 100vh;

@@ -4,6 +4,16 @@ import { JSX, useEffect, useState } from "react";
 import { Checkbox } from "./components/ui/checkbox";
 import { Input } from "./components/ui/input";
 import { HexColorPicker } from "react-colorful";
+import {
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+  Drawer,
+} from "./components/ui/drawer";
 
 const base = "http://192.168.1.44:5000";
 
@@ -52,84 +62,67 @@ function Pironman() {
   const [loading, setLoading] = useState<string | null>(null);
 
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Pironman</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p>RGB color</p>
-        <ColorPicker />
-      </CardContent>
-      <CardContent>
-        <p>RGB style</p>
-        <div className="grid grid-cols-2 items-center gap-2 mt-2">
-          {[
-            { name: "Breath", icon: "spa", value: "breath" },
-            { name: "Colorful", icon: "palette", value: "colorful" },
-            { name: "Flow", icon: "airwave", value: "flow" },
-            { name: "Raise up", icon: "moving", value: "raise_up" },
-          ].map((choice) => (
-            <Button
-              key={choice.name}
-              onClick={async () => {
-                setLoading("style");
-                await fetch(`${base}/set-rgb-style?value=${choice.value}`);
-                setLoading(null);
-              }}
-              variant="outline"
-              className="flex-1"
-              disabled={loading === "style"}
-            >
-              <span className="icon">{choice.icon}</span>
-              {choice.name}
-            </Button>
-          ))}
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button
+          variant="outline"
+          className="w-[350px] justify-start h-auto py-2"
+        >
+          <span className="icon">filter_drama</span>
+          <span className="font-black">Server controls</span>
+          <span className="icon ml-auto">arrow_forward_ios</span>
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <div className="max-h-[calc(100vh-60px)] overflow-y-scroll p-4">
+          <CardContent>
+            <p>RGB color</p>
+            <ColorPicker />
+          </CardContent>
+          <CardContent>
+            <p>RGB style</p>
+            <div className="flex items-center gap-2 mt-2">
+              {[
+                { name: "Breath", icon: "spa", value: "breath" },
+                { name: "Colorful", icon: "palette", value: "colorful" },
+                { name: "Flow", icon: "airwave", value: "flow" },
+                { name: "Raise up", icon: "moving", value: "raise_up" },
+                { name: "Leap", icon: "automation", value: "leap" },
+              ].map((choice) => (
+                <Button
+                  key={choice.name}
+                  onClick={async () => {
+                    setLoading("style");
+                    await fetch(`${base}/set-rgb-style?value=${choice.value}`);
+                    setLoading(null);
+                  }}
+                  variant="outline"
+                  className="flex-1 flex-col h-auto gap-0"
+                  disabled={loading === "style"}
+                >
+                  <span className="icon">{choice.icon}</span>
+                  {choice.name}
+                </Button>
+              ))}
+            </div>
+          </CardContent>
+          <CardContent>
+            <p>Fan temperature</p>
+            <div className="flex flex-row items-center gap-2 mt-2">
+              <Input placeholder="120" />
+              <Button onClick={ipcHandle}>Set</Button>
+            </div>
+          </CardContent>
+          <CardContent>
+            <p>Screen display duration</p>
+            <div className="flex flex-row items-center gap-2 mt-2">
+              <Input placeholder="15s" />
+              <Button onClick={ipcHandle}>Set</Button>
+            </div>
+          </CardContent>
         </div>
-      </CardContent>
-      <CardContent>
-        <p>Fan temperature</p>
-        <div className="flex flex-row items-center gap-2 mt-2">
-          <Input placeholder="120" />
-          <Button onClick={ipcHandle}>Set</Button>
-        </div>
-      </CardContent>
-      <CardContent>
-        <p>Screen display duration</p>
-        <div className="flex flex-row items-center gap-2 mt-2">
-          <Input placeholder="15s" />
-          <Button onClick={ipcHandle}>Set</Button>
-        </div>
-      </CardContent>
-      <CardContent>
-        <p>Manual override</p>
-        <div className="flex flex-row items-center gap-2 mt-2">
-          <Button
-            onClick={async () => {
-              setLoading("lock");
-              await fetch(`${base}/lock_event?eventType=LOCK`);
-              setLoading(null);
-            }}
-            variant="outline"
-            className="flex-1"
-            disabled={loading === "lock"}
-          >
-            Lock
-          </Button>
-          <Button
-            onClick={async () => {
-              setLoading("unlock");
-              await fetch(`${base}/lock_event?eventType=UNLOCK`);
-              setLoading(null);
-            }}
-            variant="outline"
-            className="flex-1"
-            disabled={loading === "unlock"}
-          >
-            Unlock
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+      </DrawerContent>
+    </Drawer>
   );
 }
 
@@ -137,18 +130,21 @@ function HexLights() {
   const ipcHandle = (): void => window.electron.ipcRenderer.send("ping");
 
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Hex Lights</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p>Color</p>
-        <div className="flex flex-row items-center gap-2 mt-2">
-          <Input placeholder="#000000" />
-          <Button onClick={ipcHandle}>Set</Button>
-        </div>
-      </CardContent>
-    </Card>
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button
+          variant="outline"
+          className="w-[350px] justify-start h-auto py-2"
+        >
+          <span className="icon">hexagon</span>
+          <span className="font-black">Hexagonal modules</span>
+          <span className="icon ml-auto">arrow_forward_ios</span>
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <div className="max-h-[calc(100vh-60px)] overflow-y-scroll p-4"></div>
+      </DrawerContent>
+    </Drawer>
   );
 }
 
@@ -156,18 +152,21 @@ function AmbientLighting() {
   const ipcHandle = (): void => window.electron.ipcRenderer.send("ping");
 
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Ambient Lighting</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p>Color</p>
-        <div className="flex flex-row items-center gap-2 mt-2">
-          <Input placeholder="#000000" />
-          <Button onClick={ipcHandle}>Set</Button>
-        </div>
-      </CardContent>
-    </Card>
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button
+          variant="outline"
+          className="w-[350px] justify-start h-auto py-2"
+        >
+          <span className="icon">light</span>
+          <span className="font-black">Ambient lighting</span>
+          <span className="icon ml-auto">arrow_forward_ios</span>
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <div className="max-h-[calc(100vh-60px)] overflow-y-scroll p-4"></div>
+      </DrawerContent>
+    </Drawer>
   );
 }
 
@@ -220,18 +219,63 @@ function Status() {
   return (
     <div
       className={
-        "rounded-full text-center inline-flex text-xs px-2 py-0.5 ml-2 gap-2 flex-row items-center" +
-        (online ? " bg-green-950" : " bg-red-950")
+        "rounded-sm text-center inline-flex text-xs px-1 ml-2 gap-2 flex-row items-center"
       }
     >
       <span
-        className={"icon text-xs" + (online ? " text-green-200" : " text-red-200")}
+        className={
+          "icon text-xs" + (online ? " text-green-900" : " text-red-900")
+        }
         style={{ fontVariationSettings: `"wght" 300` }}
       >
         wifi
       </span>
-      <p style={{ marginTop: 0 }} className={"font-medium" + (online ? " text-green-200" : " text-red-200")}>{online ? "Connected" : "Offline"}</p>
+      <p
+        style={{ marginTop: 0 }}
+        className={
+          "font-medium" + (online ? " text-green-900" : " text-red-900")
+        }
+      >
+        {online ? "Connected" : "Offline"}
+      </p>
     </div>
+  );
+}
+
+function ManualOverride() {
+  const [loading, setLoading] = useState<string | null>(null);
+  return (
+    <Card className="w-[350px]">
+      <CardHeader>
+        <p className="-mt-3">Manual override</p>
+        <div className="flex flex-row items-center gap-2 mt-2">
+          <Button
+            onClick={async () => {
+              setLoading("lock");
+              await fetch(`${base}/lock_event?eventType=LOCK`);
+              setLoading(null);
+            }}
+            variant="outline"
+            className="flex-1"
+            disabled={loading === "lock"}
+          >
+            Lock
+          </Button>
+          <Button
+            onClick={async () => {
+              setLoading("unlock");
+              await fetch(`${base}/lock_event?eventType=UNLOCK`);
+              setLoading(null);
+            }}
+            variant="outline"
+            className="flex-1"
+            disabled={loading === "unlock"}
+          >
+            Unlock
+          </Button>
+        </div>
+      </CardHeader>
+    </Card>
   );
 }
 
@@ -249,12 +293,15 @@ function App(): JSX.Element {
       </div>
 
       <h1 className="text-center mt-7 mb-3 text-3xl font-black">Functions</h1>
+      <ManualOverride />
       <LockOnLeave />
 
       <h1 className="text-center mt-7 mb-3 text-3xl font-black">Components</h1>
-      <Pironman />
-      <HexLights />
-      <AmbientLighting />
+      <div className="flex flex-col gap-2">
+        <Pironman />
+        <AmbientLighting />
+        <HexLights />
+      </div>
     </div>
   );
 }

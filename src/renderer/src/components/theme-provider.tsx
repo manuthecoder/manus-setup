@@ -42,11 +42,11 @@ export function ThemeProvider({
         ? "dark"
         : "light";
 
-      root.classList.add(systemTheme);
+      // root.classList.add(systemTheme);
       return;
     }
 
-    root.classList.add(theme);
+    // root.classList.add(theme);
   }, [theme]);
 
   const value = {
