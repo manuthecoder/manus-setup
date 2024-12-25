@@ -1,5 +1,5 @@
 appId: setup.controller.app
-productName: electron-app
+productName: manus-setup
 directories:
   buildResources: build
 files:
@@ -12,7 +12,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: electron-app
+  executableName: manus-setup
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -33,7 +33,7 @@ linux:
     - AppImage
     - snap
     - deb
-  maintainer: electronjs.org
+  maintainer: manu.is-a.dev
   category: Utility
 appImage:
   artifactName: ${name}-${version}.${ext}
