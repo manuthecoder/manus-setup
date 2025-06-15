@@ -1,19 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { JSX, useEffect, useState } from "react";
-import { Checkbox } from "./components/ui/checkbox";
-import { Input } from "./components/ui/input";
 import { HexColorPicker } from "react-colorful";
-import {
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-  Drawer,
-} from "./components/ui/drawer";
+import { Checkbox } from "./components/ui/checkbox";
+import { Drawer, DrawerContent, DrawerTrigger } from "./components/ui/drawer";
+import { Input } from "./components/ui/input";
 
 const base = "http://192.168.68.59:5000";
 
@@ -64,10 +55,7 @@ function Pironman() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-[350px] justify-start h-auto py-2"
-        >
+        <Button variant="outline" className="w-full justify-start h-auto py-2">
           <span className="icon">filter_drama</span>
           <span className="font-black">Server controls</span>
           <span className="icon ml-auto">arrow_forward_ios</span>
@@ -132,10 +120,7 @@ function HexLights() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-[350px] justify-start h-auto py-2"
-        >
+        <Button variant="outline" className="w-full justify-start h-auto py-2">
           <span className="icon">hexagon</span>
           <span className="font-black">Hexagonal modules</span>
           <span className="icon ml-auto">arrow_forward_ios</span>
@@ -176,10 +161,7 @@ function AmbientLighting() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-[350px] justify-start h-auto py-2"
-        >
+        <Button variant="outline" className="w-full justify-start h-auto py-2">
           <span className="icon">light</span>
           <span className="font-black">Ambient lighting</span>
           <span className="icon ml-auto">arrow_forward_ios</span>
@@ -236,7 +218,7 @@ function LockOnLeave() {
   // const ipcHandle = (): void => window.electron.ipcRenderer.send("ping");
 
   return (
-    <Card className="w-[350px]">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Lock on leave</CardTitle>
       </CardHeader>
@@ -286,16 +268,17 @@ function Status() {
     >
       <span
         className={
-          "icon text-xs" + (online ? " text-green-900" : " text-red-900")
+          "icon text-[15px]" + (online ? " text-green-900" : " text-red-900")
         }
-        style={{ fontVariationSettings: `"wght" 300` }}
+        style={{ fontVariationSettings: `"wght" 700` }}
       >
         wifi
       </span>
       <p
         style={{ marginTop: 0 }}
         className={
-          "font-medium" + (online ? " text-green-900" : " text-red-900")
+          "text-[15px] font-extrabold" +
+          (online ? " text-green-900" : " text-red-900")
         }
       >
         {online ? "Connected" : "Offline"}
@@ -307,7 +290,7 @@ function Status() {
 function ManualOverride() {
   const [loading, setLoading] = useState<string | null>(null);
   return (
-    <Card className="w-[350px]">
+    <Card className="w-full">
       <CardHeader>
         <p className="-mt-3">Manual override</p>
         <div className="flex flex-row items-center gap-2 mt-2">
@@ -354,16 +337,16 @@ function App(): JSX.Element {
         <Status />
       </div>
 
-      <h1 className="text-center mt-7 mb-3 text-3xl font-black">Functions</h1>
+      <h1 className="mt-7 mb-3 text-3xl font-black">Functions</h1>
       <ManualOverride />
-      <LockOnLeave />
-
-      <h1 className="text-center mt-7 mb-3 text-3xl font-black">Components</h1>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 w-full">
         <Pironman />
         <AmbientLighting />
         <HexLights />
       </div>
+
+      <h1 className="mt-7 mb-3 text-3xl font-black">Settings</h1>
+      <LockOnLeave />
     </div>
   );
 }
