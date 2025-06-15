@@ -15,7 +15,7 @@ import {
   Drawer,
 } from "./components/ui/drawer";
 
-const base = "http://192.168.1.44:5000";
+const base = "http://192.168.68.59:5000";
 
 function CheckboxGroup({
   label,
@@ -149,7 +149,29 @@ function HexLights() {
 }
 
 function AmbientLighting() {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send("ping");
+  const [loading, setLoading] = useState<string | null>(null);
+
+  const RGB_COMMANDS = {
+    ON: "3301010000000000000000000000000000000033",
+    OFF: "3301000000000000000000000000000000000032",
+
+    //scenes
+    SUNRISE: "3305040000000000000000000000000000000032",
+    SUNSET: "3305040100000000000000000000000000000033",
+    MOVIE: "3305040400000000000000000000000000000036",
+    ROSE: "3305040500000000000000000000000000000037",
+    FIRE: "3305040700000000000000000000000000000035",
+    BLINKING: "330504080000000000000000000000000000003a",
+    CANDLE: "330504090000000000000000000000000000003b",
+    SNOW: "3305040f0000000000000000000000000000003d",
+    RAINBOW: "3305041600000000000000000000000000000024",
+  };
+
+  const sendCommand = async (command: string) => {
+    setLoading(command);
+    await fetch(`${base}/ambient_lighting?value=${command}`);
+    setLoading(null);
+  };
 
   return (
     <Drawer>
@@ -164,7 +186,47 @@ function AmbientLighting() {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="max-h-[calc(100vh-60px)] overflow-y-scroll p-4"></div>
+        <div className="max-h-[calc(100vh-60px)] overflow-y-scroll p-4 flex gap-2">
+          <Button
+            onClick={() => sendCommand(RGB_COMMANDS.ON)}
+            disabled={loading === RGB_COMMANDS.ON}
+            variant="outline"
+            className="flex-1"
+          >
+            Turn on
+          </Button>
+          <Button
+            onClick={() => sendCommand(RGB_COMMANDS.OFF)}
+            disabled={loading === RGB_COMMANDS.OFF}
+            variant="outline"
+            className="flex-1"
+          >
+            Turn off
+          </Button>
+        </div>
+        <div className="max-h-[calc(100vh-60px)] overflow-y-scroll p-4 flex flex-col gap-2">
+          {[
+            { name: "Sunrise", value: RGB_COMMANDS.SUNRISE },
+            { name: "Sunset", value: RGB_COMMANDS.SUNSET },
+            { name: "Movie", value: RGB_COMMANDS.MOVIE },
+            { name: "Rose", value: RGB_COMMANDS.ROSE },
+            { name: "Fire", value: RGB_COMMANDS.FIRE },
+            { name: "Blinking", value: RGB_COMMANDS.BLINKING },
+            { name: "Candle", value: RGB_COMMANDS.CANDLE },
+            { name: "Snow", value: RGB_COMMANDS.SNOW },
+            { name: "Rainbow", value: RGB_COMMANDS.RAINBOW },
+          ].map((scene) => (
+            <Button
+              key={scene.name}
+              onClick={() => sendCommand(scene.value)}
+              disabled={loading === scene.value}
+              variant="outline"
+              className="flex-1"
+            >
+              {scene.name}
+            </Button>
+          ))}
+        </div>
       </DrawerContent>
     </Drawer>
   );
